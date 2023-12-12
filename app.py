@@ -137,6 +137,8 @@ def prediction_app(start, end):
 
             lstm_model = st.checkbox('Multivariate LSTM')
             if lstm_model:
+                data, START, TODAY = load_data_lstm(selected_stock)
+                
                 features = ['Close', 'High', 'Low', 'Open', 'Volume']
                 look_back = 5 # No. of Lags to consider
                 predict_type = 'predict' #predict_type.lower()
@@ -158,8 +160,8 @@ def prediction_app(start, end):
 
 
 
-                table, df = get_preds(test_X, test_data, test_dates, scaler, model)
-                #table, df = get_preds(object_file['test_X'], object_file['test_data'], object_file["test_dates"], object_file['test_predict_inverse'],object_file['test_Y_inverse'], model)
+                # table, df = get_preds(test_X, test_data, test_dates, scaler, model)
+                table, df = get_preds(object_file['test_X'], object_file['test_data'], object_file["test_dates"], object_file['test_predict_inverse'],object_file['test_Y_inverse'], model)
                 st.subheader('Predicted values')
                 st.write(table)
 
@@ -227,9 +229,8 @@ def show_news(ticker):
     titles = []
     for news in all_news:
         titles.append(news['title'])
-    st.write(titles)
-    #title_df = pd.DataFrame(titles, columns=['Top Headlines'])
-    #st.dataframe(title_df, width=800)
+    title_df = pd.DataFrame(titles, columns=['Top Headlines'])
+    st.dataframe(title_df, width=800)
 
 
 
@@ -288,11 +289,11 @@ series_info = series_info.drop('About')
 series_info.name = 'Stock'            
 st.dataframe(series_info, width=800)
 
-if pivot_sector:
-    todays_news = st.sidebar.checkbox("Today's News", value = True)
-    if todays_news:
-        st.title("Today's Stock News")
-        show_news(ticker)
+# if pivot_sector:
+#     todays_news = st.sidebar.checkbox("Today's News", value = True)
+#     if todays_news:
+#         st.title("Today's Stock News")
+#         show_news(ticker)
 
 '''#### Choose the timeframe of the stock'''
 start = st.text_input('Enter the start date in yyyy-mm-dd format:', '2018-01-01')
@@ -356,10 +357,3 @@ if check_dates() and pivot_date == True:
         
     else:
         st.error('Invalid ticker')
-    
-
-    
-
-
-
-
