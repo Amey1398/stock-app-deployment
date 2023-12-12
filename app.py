@@ -8,6 +8,7 @@ To run the code:
 cd app
 streamlit run app.py
 """
+
 import streamlit as st
 import matplotlib.pyplot as plt, pandas as pd, numpy as np
 from PIL import Image
@@ -86,7 +87,7 @@ def plotData(ticker, start, end):
     ax[1].plot(df_stockdata.index[1:], df_stockdata.pct_change().values[1:],'r-')
     ax[1].set_xlim(ax[1].get_xlim()[0] - 10, ax[1].get_xlim()[1] + 10)
     ax[1].set_xlabel('Time Frame')
-    ax[1].set_ylabel('Price')
+    ax[1].set_ylabel('Percentage Change')
     plt.tight_layout()
     ax[1].grid(True)
     st.pyplot(fig)
@@ -97,7 +98,7 @@ def prediction_app(start, end):
             START = pd.to_datetime(start)
             TODAY = date.today().strftime("%Y-%m-%d")
 
-            stocks = ('GOOG', 'AMZN', 'MSFT', 'GME', 'META', 'NFLX','NVDA','TSLA', 'AAPL')
+            stocks = ('GOOG', 'AMZN', 'MSFT', 'GME', 'META', 'NFLX','NVDA','TSLA')
             selected_stock = st.selectbox('Select dataset for prediction', stocks)
 
             @st.cache_data
@@ -136,8 +137,6 @@ def prediction_app(start, end):
 
             lstm_model = st.checkbox('Multivariate LSTM')
             if lstm_model:
-                data, START, TODAY = load_data_lstm(selected_stock)
-                
                 features = ['Close', 'High', 'Low', 'Open', 'Volume']
                 look_back = 5 # No. of Lags to consider
                 predict_type = 'predict' #predict_type.lower()
@@ -159,8 +158,8 @@ def prediction_app(start, end):
 
 
 
-                # table, df = get_preds(test_X, test_data, test_dates, scaler, model)
-                table, df = get_preds(object_file['test_X'], object_file['test_data'], object_file["test_dates"], object_file['test_predict_inverse'],object_file['test_Y_inverse'], model)
+                table, df = get_preds(test_X, test_data, test_dates, scaler, model)
+                #table, df = get_preds(object_file['test_X'], object_file['test_data'], object_file["test_dates"], object_file['test_predict_inverse'],object_file['test_Y_inverse'], model)
                 st.subheader('Predicted values')
                 st.write(table)
 
@@ -359,6 +358,7 @@ if check_dates() and pivot_date == True:
     
 
     
+
 
 
 
