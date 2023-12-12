@@ -227,8 +227,9 @@ def show_news(ticker):
     titles = []
     for news in all_news:
         titles.append(news['title'])
-    title_df = pd.DataFrame(titles, columns=['Top Headlines'])
-    st.dataframe(title_df, width=800)
+    st.write(titles)
+    #title_df = pd.DataFrame(titles, columns=['Top Headlines'])
+    #st.dataframe(title_df, width=800)
 
 
 
