@@ -226,6 +226,7 @@ def chatgpt_bot():
 def show_news(ticker):
     stock = yf.Ticker(ticker)
     all_news = stock.news
+    print(all_news)
     titles = []
     for news in all_news:
         titles.append(news['title'])
@@ -289,11 +290,11 @@ series_info = series_info.drop('About')
 series_info.name = 'Stock'            
 st.dataframe(series_info, width=800)
 
-# if pivot_sector:
-#     todays_news = st.sidebar.checkbox("Today's News", value = True)
-#     if todays_news:
-#         st.title("Today's Stock News")
-#         show_news(ticker)
+if pivot_sector:
+    todays_news = st.sidebar.checkbox("Today's News", value = True)
+    if todays_news:
+        st.title("Today's Stock News")
+        show_news(ticker)
 
 '''#### Choose the timeframe of the stock'''
 start = st.text_input('Enter the start date in yyyy-mm-dd format:', '2018-01-01')
